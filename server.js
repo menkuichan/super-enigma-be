@@ -7,7 +7,7 @@ const HOST = '0.0.0.0';
 const BASE_URL = 'https://api.themoviedb.org/3/movie/popular';
 const API_KEY = 'ab7c9fc53125a8e8d9fd23c8704f80e5';
 
-function getHelloWorld() {
+function getTotalPages() {
   return axios.get(BASE_URL,
     {
       params: {
@@ -23,7 +23,7 @@ function getHelloWorld() {
 
 // App
 http.createServer((req, res) => {
-  getHelloWorld().then((total_pages) => {
+  getTotalPages().then((total_pages) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
     res.end(`Hello World and total pages - ${total_pages}`);
