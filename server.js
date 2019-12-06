@@ -1,7 +1,6 @@
-const http = require('http');
+const express = require('express');
 const axios = require('axios');
 
-// Constants
 const port = process.env.PORT || 8080;
 const hostname = process.env.HOST || '127.0.0.1';
 const BASE_URL = 'https://api.themoviedb.org/3/movie/popular';
@@ -18,8 +17,8 @@ function getTotalPages() {
     .then(({ data: { total_pages } }) => total_pages);
 }
 
-// App
-http.createServer((req, res) => {
+const app = express();
+app.get('/', (req, res) => {
   getTotalPages().then((total_pages) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
