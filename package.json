@@ -5,7 +5,10 @@
     "author": "First Last <first.last@example.com>",
     "main": "server.js",
     "scripts": {
-        "start": "node server.js"
+        "start": "node server.js",
+        "docker:build": "docker build -t projects/super-enigma-be .",
+        "docker:run": "docker run -p 49160:8080 -d projects/super-enigma-be",
+        "curl": "curl -i localhost:49160"
     },
     "dependencies": {
         "axios": "^0.19.0",
