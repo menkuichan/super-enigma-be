@@ -1,13 +1,9 @@
 const express = require('express');
 const axios = require('axios');
-
-const port = process.env.PORT || 8080;
-const hostname = process.env.HOST || '127.0.0.1';
-const BASE_URL = 'https://api.themoviedb.org/3/movie/popular';
-const API_KEY = 'ab7c9fc53125a8e8d9fd23c8704f80e5';
+const { PORT, HOST, URL, API_KEY } = require('./src/constants.js');
 
 function getTotalPages() {
-  return axios.get(BASE_URL,
+  return axios.get(URL,
     {
       params: {
         api_key: API_KEY,
@@ -24,6 +20,6 @@ app.get('/', (req, res) => {
     res.setHeader('Content-Type', 'text/plain');
     res.end(`Hello World and total pages - ${total_pages}`);
   });
-}).listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+}).listen(PORT, HOST, () => {
+  console.log(`Server running at http://${HOST}:${PORT}/`);
 });

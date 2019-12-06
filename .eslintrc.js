@@ -7,6 +7,7 @@ module.exports = {
   ],
   rules: {
     "no-console": 0,
-    "camelcase": 1,
+    "camelcase": 0,
+    "object-curly-newline": 0,
   },
 };
