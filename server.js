@@ -1,17 +1,6 @@
 const express = require('express');
-const axios = require('axios');
-const { PORT, HOST, URL, API_KEY } = require('./src/constants.js');
-
-function getTotalPages() {
-  return axios.get(URL,
-    {
-      params: {
-        api_key: API_KEY,
-        page: 1,
-      },
-    })
-    .then(({ data: { total_pages } }) => total_pages);
-}
+const { getTotalPages } = require('./src/api');
+const { PORT, HOST } = require('./src/constants');
 
 const app = express();
 app.get('/', (req, res) => {
