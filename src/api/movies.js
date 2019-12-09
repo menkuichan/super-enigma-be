@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { URL, API_KEY } = require('./constants.js');
+const { URL, API_KEY } = require('../constants.js');
 
 function getTotalPages() {
   return axios.get(URL,
