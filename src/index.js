@@ -40,11 +40,11 @@ const movie = new Movie({
   overview: 'Best movie',
 });
 
-movie.save((err) => {
+Movie.create(movie, (err, doc) => {
   mongoose.disconnect();
   if (err) return console.log(err);
 
-  console.log('Saved object:', movie);
+  console.log('Сохранен объект user', doc);
 });
 
 const app = express();
