@@ -1,30 +1,16 @@
 const { MongoClient } = require('mongodb');
-const mongoose = require('mongoose');
 const assert = require('assert');
 const express = require('express');
+const mongoose = require('mongoose');
 const { getPages } = require('./controllers/get');
 const { PORT, HOST } = require('./constants');
 
-// Connection URL
-const url = 'mongodb://localhost:27017';
-
-// Database Name
-const dbName = 'ilona';
-
-// Create a new MongoClient
-const client = new MongoClient(url);
+const { getMovies } = require('./api/movies');
+const { URL } = require('./constants');
 
 const { Schema } = mongoose;
 
-// Use connect method to connect to the Server
-client.connect((err) => {
-  assert.equal(null, err);
-  console.log('Connected successfully to server');
-
-  const db = client.db(dbName);
-
-  client.close();
-});
+const page = 1;
 
 const movieScheme = new Schema({
   title: String,
@@ -35,16 +21,37 @@ mongoose.connect('mongodb://localhost:27017/usersdb', { useNewUrlParser: true })
 
 const Movie = mongoose.model('Movie', movieScheme);
 
-const movie = new Movie({
-  title: 'Fight Club',
-  overview: 'Best movie',
-});
+getMovies({ page, URL })
+  .then(({ movies }) => {
+    movies.map(res => {
+      const { title, overview } = res;
+      Movie.create(new Movie({ title, overview }), (err, doc) => {
+        mongoose.disconnect();
+        if (err) return console.log(err);
 
-Movie.create(movie, (err, doc) => {
-  mongoose.disconnect();
-  if (err) return console.log(err);
+        console.log('Сохранен объект user', doc);
+      });
+    });
+  })
+  .catch(e => {
+    console.log(e);
+  });
 
-  console.log('Сохранен объект user', doc);
+// Connection URL
+const url = 'mongodb://localhost:27017';
+
+// Database Name
+const dbName = 'ilona';
+
+// Create a new MongoClient
+const client = new MongoClient(url);
+
+// Use connect method to connect to the Server
+client.connect((err) => {
+  assert.equal(null, err);
+  console.log('Connected successfully to server');
+  const db = client.db(dbName);
+  client.close();
 });
 
 const app = express();

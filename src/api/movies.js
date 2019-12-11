@@ -1,15 +1,24 @@
 const axios = require('axios');
-const { URL, API_KEY } = require('../constants.js');
+const { API_KEY, MAX_TOTAL_PAGES } = require('../constants.js');
 
-function getTotalPages() {
-  return axios.get(URL,
-    {
-      params: {
-        api_key: API_KEY,
-        page: 1,
-      },
-    })
-    .then(({ data: { total_pages } }) => total_pages);
-}
+const getMovies = ({ page, URL }) => axios.get(
+  URL,
+  {
+    params: {
+      api_key: API_KEY,
+      page,
+    },
+  },
+)
+  .then((res => {
+    const { results } = res.data;
+    const { total_pages: originalTotalPages } = res.data;
+    const totalPages = Math.min(originalTotalPages, MAX_TOTAL_PAGES);
+    const movies = results.map(
+      ({ title, overview,
+      }) => ({ title, overview }),
+    );
+    return { totalPages, movies };
+  }));
 
-module.exports = { getTotalPages };
+module.exports = { getMovies };
