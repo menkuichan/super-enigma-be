@@ -23,14 +23,22 @@ const Movie = mongoose.model('Movie', movieScheme);
 
 getMovies({ page, URL })
   .then(({ movies }) => {
-    movies.map(res => {
-      const { title, overview } = res;
-      Movie.create(new Movie({ title, overview }), (err, doc) => {
-        mongoose.disconnect();
-        if (err) return console.log(err);
+    movies.map(movie => {
+      const { title, overview } = movie;
+      Movie.findOne({ title })
+        .then((doc) => doc)
+        .then(result => {
+          if (result === null) {
+            Movie.create(new Movie({ title, overview }), (e, doc) => {
+              if (e) return console.log(e);
 
-        console.log('Сохранен объект user', doc);
-      });
+              console.log('Сохранен объект movie:', doc);
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     });
   })
   .catch(e => {
