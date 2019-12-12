@@ -49,8 +49,6 @@ function updateMovie({ ...parameters }, { ...newParameters }) {
   );
 }
 
-Movie.find({ title: 'Star Wars: The Rise of Skywalker' }, (e, r) => console.log(r));
-
 function deleteMovie({ ...parameters }) {
   Movie.findOneAndDelete(parameters, (e, movie) => {
     if (e) return console.log(e);
