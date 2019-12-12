@@ -15,6 +15,7 @@ const page = 1;
 const movieScheme = new Schema({
   title: String,
   overview: String,
+  releaseDate: String,
 });
 
 mongoose.connect('mongodb://localhost:27017/usersdb', { useNewUrlParser: true });
@@ -24,16 +25,12 @@ const Movie = mongoose.model('Movie', movieScheme);
 getMovies({ page, URL })
   .then(({ movies }) => {
     movies.map(movie => {
-      const { title, overview } = movie;
+      const { title, overview, releaseDate } = movie;
       Movie.findOne({ title })
         .then((doc) => doc)
         .then(result => {
           if (result === null) {
-            Movie.create(new Movie({ title, overview }), (e, doc) => {
-              if (e) return console.log(e);
-
-              console.log('Сохранен объект movie:', doc);
-            });
+            createMovie({ title, overview, releaseDate });
           }
         })
         .catch((err) => {
@@ -44,6 +41,36 @@ getMovies({ page, URL })
   .catch(e => {
     console.log(e);
   });
+
+function createMovie(parameters) {
+  Movie.create(new Movie({ ...parameters }), (e, movie) => {
+    if (e) return console.log(e);
+
+    console.log('Saved movie:', movie);
+  });
+}
+
+function findMovieById(id) {
+  Movie.findById(id, (err, movie) => console.log(movie));
+}
+
+function updateMovie({ ...parameters }, { ...newParameters }) {
+  Movie.updateOne(
+    parameters,
+    newParameters,
+    (e, movie) => {
+      console.log('Updated movie: ', movie);
+    },
+  );
+}
+
+
+function deleteMovie({ ...parameters }) {
+  Movie.findOneAndDelete(parameters, (e, movie) => {
+    if (e) return console.log(e);
+    console.log('Deleted movie ', movie);
+  });
+}
 
 // Connection URL
 const url = 'mongodb://localhost:27017';
