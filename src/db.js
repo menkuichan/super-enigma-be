@@ -12,7 +12,6 @@ getMovies({ page, URL })
     movies.map(movie => {
       const { title, overview, releaseDate } = movie;
       Movie.findOne({ title })
-        .then((doc) => doc)
         .then(result => {
           if (result === null) {
             createMovie({ title, overview, releaseDate });
@@ -28,30 +27,34 @@ getMovies({ page, URL })
   });
 
 function createMovie(parameters) {
-  Movie.create(new Movie({ ...parameters }), (e, movie) => {
-    if (e) return console.log(e);
-
-    console.log('Saved movie:', movie);
-  });
+  Movie.create(new Movie({ ...parameters }))
+    .then(movie => {
+      console.log('Saved movie: ', movie);
+    })
+    .catch(e => console.log(e));
 }
 
 function findMovieById(id) {
-  Movie.findById(id, (err, movie) => console.log(movie));
+  Movie.findById(id)
+    .then(movie => console.log(movie))
+    .catch(e => console.log('Error with finding movies: ', e));
 }
 
 function updateMovie({ ...parameters }, { ...newParameters }) {
   Movie.updateOne(
     parameters,
     newParameters,
-    (e, movie) => {
+  )
+    .then(movie => {
       console.log('Updated movie: ', movie);
-    },
-  );
+    })
+    .catch(e => {
+      console.log('Error with updating movies: ', e);
+    });
 }
 
 function deleteMovie({ ...parameters }) {
-  Movie.findOneAndDelete(parameters, (e, movie) => {
-    if (e) return console.log(e);
-    console.log('Deleted movie ', movie);
-  });
+  Movie.findOneAndDelete(parameters)
+    .then(movie => console.log('Deleted movie: ', movie))
+    .catch(e => console.log('Error with deletind movies: ', e));
 }
