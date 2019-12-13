@@ -1,20 +1,25 @@
 const mongoose = require('mongoose');
 const { getMovies } = require('./api/movies');
-const { URL } = require('./constants');
+const { PARAMS } = require('./constants');
 const { Movie } = require('./schemes');
-
+// Movie.deleteMany({}, (e,r) => console.log(r));
 const page = 1;
 
 mongoose.connect('mongodb://localhost:27017/usersdb', { useNewUrlParser: true });
 
-getMovies({ page, URL })
+const url = `${PARAMS.URL}popular`;
+
+getMovies({ page, url })
   .then(({ movies }) => {
     movies.map(movie => {
-      const { title, overview, releaseDate } = movie;
-      Movie.findOne({ title })
+      const {
+        title,
+        releaseDate,
+      } = movie;
+      Movie.findOne({ title, releaseDate })
         .then(result => {
           if (result === null) {
-            createMovie({ title, overview, releaseDate });
+            createMovie(movie);
           }
         })
         .catch((err) => {
@@ -26,8 +31,8 @@ getMovies({ page, URL })
     console.log(e);
   });
 
-function createMovie(parameters) {
-  Movie.create(new Movie({ ...parameters }))
+function createMovie({ ...parameters }) {
+  Movie.create(new Movie(parameters))
     .then(movie => {
       console.log('Saved movie: ', movie);
     })

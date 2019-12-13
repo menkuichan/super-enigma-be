@@ -7,8 +7,7 @@
     "scripts": {
         "start": "node src/index.js",
         "docker:build": "docker build -t projects/super-enigma-be .",
-        "docker:run": "docker run -p 49160:8080 -d projects/super-enigma-be",
-        "curl": "curl -i localhost:49160"
+        "docker:run": "docker run -p 49160:8080 -d projects/super-enigma-be"
     },
     "dependencies": {
         "axios": "^0.19.0",
