@@ -18,7 +18,7 @@ getMovies({ page, url })
       } = movie;
       Movie.findOne({ title, releaseDate })
         .then(result => {
-          if (result === null) {
+          if (!result) {
             createMovie(movie);
           }
         })
