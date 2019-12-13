@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { getMovies } = require('./api/movies');
 const { PARAMS } = require('./constants');
 const { Movie } = require('./schemes');
-// Movie.deleteMany({}, (e,r) => console.log(r));
+
 const page = 1;
 
 mongoose.connect('mongodb://localhost:27017/usersdb', { useNewUrlParser: true });
