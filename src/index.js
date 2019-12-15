@@ -1,9 +1,9 @@
 const { MongoClient } = require('mongodb');
 const assert = require('assert');
 const express = require('express');
-const { getPages } = require('./controllers/get');
+// const { getPages } = require('./controllers/get');
+const { getMovieById, createMovie, getMovies } = require('./controllers/crud');
 const { PORT, HOST } = require('./constants');
-require('./db');
 
 // Connection URL
 const url = 'mongodb://localhost:27017';
@@ -22,9 +22,12 @@ client.connect((err) => {
   client.close();
 });
 
+
 const app = express();
-app.get('/', (req, res) => {
-  getPages(req, res);
-}).listen(PORT, HOST, () => {
+app.get('/movies/', getMovies)
+app.get('/movies/:movieId', getMovieById)
+app.post('/movies/', createMovie)
+
+app.listen(PORT, HOST, () => {
   console.log(`Server running at http://${HOST}:${PORT}/`);
 });
