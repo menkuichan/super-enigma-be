@@ -24,9 +24,8 @@ client.connect((err) => {
 
 
 const app = express();
-app.get('/movies/', getMovies)
-app.get('/movies/:movieId', getMovieById)
-app.post('/movies/', createMovie)
+app.get('/movies/', getMovies);
+app.get('/movies/:movieId', getMovieById);
 
 app.listen(PORT, HOST, () => {
   console.log(`Server running at http://${HOST}:${PORT}/`);

@@ -11,24 +11,22 @@ const url = `${PARAMS.URL}popular`;
 
 function getMovies() {
   return getMoviesFromApi({ page, url })
-    .then(({ movies }) => {
-      return movies.map(movie => {
-        const {
-          title,
-          releaseDate,
-        } = movie;
-        Movie.findOne({ title, releaseDate })
-          .then(result => {
-            if (!result) {
-              createMovie(movie);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-        return movie
-      });
-    })
+    .then(({ movies }) => movies.map(movie => {
+      const {
+        title,
+        releaseDate,
+      } = movie;
+      Movie.findOne({ title, releaseDate })
+        .then(result => {
+          if (!result) {
+            createMovie(movie);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      return movie;
+    }))
     .catch(e => {
       console.log(e);
     });
@@ -36,6 +34,7 @@ function getMovies() {
 
 function createMovie({ ...parameters }) {
   return Movie.create(new Movie(parameters))
+    .then(movie => console.log(movie))
     .catch(e => console.log('Error while saving movie:', e));
 }
 
@@ -58,14 +57,13 @@ function updateMovie({ ...parameters }, { ...newParameters }) {
 }
 
 function deleteMovie({ ...parameters }) {
-  Movie.findOneAndDelete(parameters)
-    .then(movie => console.log('Deleted movie: ', movie))
+  return Movie.findOneAndDelete(parameters)
     .catch(e => console.log('Error with deletind movies: ', e));
 }
 
-
 module.exports = {
   findMovieById,
-  createMovie,
+  deleteMovie,
   getMovies,
-}
+  createMovie,
+};
