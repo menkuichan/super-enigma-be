@@ -53,8 +53,8 @@ function updateMovie({ ...parameters }, { ...newParameters }) {
     });
 }
 
-function deleteMovie({ ...parameters }) {
-  return Movie.findOneAndDelete(parameters)
+function deleteMovie(id) {
+  return Movie.findOneAndDelete(id)
     .catch(e => console.log('Error with deletind movies: ', e));
 }
 

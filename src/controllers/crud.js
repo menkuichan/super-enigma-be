@@ -27,15 +27,15 @@ exports.getMovies = (req, res) => {
     });
 };
 
-// exports.deleteMovie = (req, res) => {
-//   const { movieTitle } = req.params;
-//   deleteMovie(movieTitle)
-//     .then(movie => {
-//       res.statusCode = 201;
-//       res.setHeader('Content-Type', 'application/json');
-//       res.end(JSON.stringify(movie));
-//     });
-// };
+exports.deleteMovie = (req, res) => {
+  const { id } = req.params;
+  deleteMovie(id)
+    .then(movie => {
+      res.statusCode = 201;
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify(movie));
+    });
+};
 
 exports.updateMovie = (req, res) => {
   const { parameters, newParameters } = res.params;

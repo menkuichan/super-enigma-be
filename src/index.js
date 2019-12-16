@@ -21,7 +21,7 @@ client.connect((err) => {
 const app = express();
 app.get('/movies/', getMovies);
 app.get('/movies/:movieId', getMovieById);
-// app.delete('/movies/:id', deleteMovie);
+app.delete('/movies/:id', deleteMovie);
 
 app.listen(PORT, HOST, () => {
   console.log(`Server running at http://${HOST}:${PORT}/`);
