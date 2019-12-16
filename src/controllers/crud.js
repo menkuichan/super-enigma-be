@@ -1,4 +1,4 @@
-const { findMovieById, deleteMovie, getMovies, createMovie } = require('../db');
+const { findMovieById, deleteMovie, getMovies, createMovie, updateMovie } = require('../db');
 
 exports.getMovieById = (req, res) => {
   const { movieId } = req.params;
@@ -27,9 +27,19 @@ exports.getMovies = (req, res) => {
     });
 };
 
-exports.deleteMovie = (req, res) => {
-  const { movieTitle } = req.params;
-  deleteMovie(movieTitle)
+// exports.deleteMovie = (req, res) => {
+//   const { movieTitle } = req.params;
+//   deleteMovie(movieTitle)
+//     .then(movie => {
+//       res.statusCode = 201;
+//       res.setHeader('Content-Type', 'application/json');
+//       res.end(JSON.stringify(movie));
+//     });
+// };
+
+exports.updateMovie = (req, res) => {
+  const { parameters, newParameters } = res.params;
+  updateMovie({ parameters }, { newParameters })
     .then(movie => {
       res.statusCode = 201;
       res.setHeader('Content-Type', 'application/json');

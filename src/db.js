@@ -44,13 +44,10 @@ function findMovieById(id) {
 }
 
 function updateMovie({ ...parameters }, { ...newParameters }) {
-  Movie.updateOne(
+  return Movie.updateOne(
     parameters,
     newParameters,
   )
-    .then(movie => {
-      console.log('Updated movie: ', movie);
-    })
     .catch(e => {
       console.log('Error with updating movies: ', e);
     });
@@ -66,4 +63,5 @@ module.exports = {
   deleteMovie,
   getMovies,
   createMovie,
+  updateMovie,
 };
