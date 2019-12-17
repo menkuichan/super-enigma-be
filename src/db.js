@@ -30,15 +30,14 @@ exports.getMovies = () => getMoviesFromApi({ page, url })
     console.log(e);
   });
 
-exports.createMovie = ({ ...parameters }) => Movie.create(new Movie(parameters))
-  .then(movie => console.log(movie))
+exports.createMovie = (movie) => Movie.create(new Movie(movie))
   .catch(e => console.log('Error while saving movie:', e));
 
 exports.findMovieById = (id) => Movie.findById(id)
   .catch(e => console.log('Error with finding movies: ', e));
 
-exports.updateMovie = ({ ...parameters }, { ...newParameters }) => Movie.updateOne(
-  parameters,
+exports.updateMovie = (id, { ...newParameters }) => Movie.updateOne(
+  id,
   newParameters,
 )
   .catch(e => {

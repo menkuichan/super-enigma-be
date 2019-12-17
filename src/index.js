@@ -17,8 +17,8 @@ client.connect((err) => {
   client.close();
 });
 
-
 const app = express();
+app.use(express.json());
 app.get('/movies/', getMovies);
 app.get('/movies/:movieId', getMovieById);
 app.delete('/movies/:id', deleteMovie);
