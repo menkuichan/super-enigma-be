@@ -1,29 +1,26 @@
-const { findMovieById, deleteMovie, getMovies, createMovie, updateMovie } = require('../db');
+const { findMovieById, deleteMovie, getMovies, createMovie, updateMovie } = require('../model');
 
 exports.getMovieById = (req, res) => {
   const { movieId } = req.params;
   findMovieById(movieId).then(movie => {
-    res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(movie));
+    res.status(200).json(movie);
   });
 };
 
 exports.createMovie = (req, res) => {
   createMovie(req.body)
     .then(movie => {
-      res.statusCode = 201;
       res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(movie));
+      res.status(200).json(movie);
     });
 };
 
 exports.getMovies = (req, res) => {
   getMovies()
     .then(movies => {
-      res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(movies));
+      res.status(200).json(movies);
     });
 };
 
@@ -31,9 +28,8 @@ exports.deleteMovie = (req, res) => {
   const { id } = req.params;
   deleteMovie(id)
     .then(movie => {
-      res.statusCode = 201;
       res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(movie));
+      res.status(200).json(movie);
     });
 };
 
@@ -41,8 +37,7 @@ exports.updateMovie = (req, res) => {
   const { params: { id }, body } = req;
   updateMovie(id, body)
     .then(movie => {
-      res.statusCode = 201;
       res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(movie));
+      res.status(200).json(movie);
     });
 };

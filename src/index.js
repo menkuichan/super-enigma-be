@@ -1,7 +1,7 @@
 const { MongoClient } = require('mongodb');
 const assert = require('assert');
 const express = require('express');
-const { getMovieById, deleteMovie, getMovies, createMovie, updateMovie } = require('./controllers/crud');
+const { getMovieById, deleteMovie, getMovies, createMovie, updateMovie } = require('./controllers/movie');
 const { PORT, HOST } = require('./constants');
 
 const url = 'mongodb://localhost:27017';
