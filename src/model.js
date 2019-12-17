@@ -10,26 +10,25 @@ mongoose.connect(DB_URI, { useNewUrlParser: true, useFindAndModify: false });
 
 const url = `${PARAMS.URL}popular`;
 
-exports.getMovies = () => getMoviesFromApi({ page, url })
-  .then(({ movies }) => movies.map(movie => {
-    const {
-      title,
-      releaseDate,
-    } = movie;
-    Movie.findOne({ title, releaseDate })
-      .then(result => {
+exports.getMovies = async () => {
+  try {
+    const { movies } = await getMoviesFromApi({ page, url });
+    return movies.map(async (movie) => {
+      const { title, releaseDate } = movie;
+      try {
+        const result = await Movie.findOne({ title, releaseDate });
         if (!result) {
           this.createMovie(movie);
         }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    return movie;
-  }))
-  .catch(e => {
+      } catch (e) {
+        console.log(e);
+      }
+      return movie;
+    });
+  } catch (e) {
     console.log(e);
-  });
+  }
+};
 
 exports.createMovie = (movie) => Movie.create(new Movie(movie))
   .catch(e => console.log('Error while saving movie:', e));
