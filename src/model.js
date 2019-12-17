@@ -5,7 +5,7 @@ const { Movie } = require('./schemes');
 
 const page = 1;
 
-mongoose.connect('mongodb://localhost:27017/usersdb', { useNewUrlParser: true, useFindAndModify: false });
+mongoose.connect('mongodb://localhost:27017', { useNewUrlParser: true, useFindAndModify: false });
 
 const url = `${PARAMS.URL}popular`;
 
@@ -44,5 +44,5 @@ exports.updateMovie = (id, body) => Movie.findOneAndUpdate(
     console.log('Error with updating movies: ', e);
   });
 
-exports.deleteMovie = (id) => Movie.findOneAndDelete(id)
+exports.deleteMovie = (id) => Movie.findOneAndDelete({ _id: id })
   .catch(e => console.log('Error with deletind movies: ', e));
