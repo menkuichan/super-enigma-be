@@ -38,8 +38,8 @@ exports.deleteMovie = (req, res) => {
 };
 
 exports.updateMovie = (req, res) => {
-  const { parameters, newParameters } = res.params;
-  updateMovie({ parameters }, { newParameters })
+  const { params: { id }, body } = req;
+  updateMovie(id, body)
     .then(movie => {
       res.statusCode = 201;
       res.setHeader('Content-Type', 'application/json');

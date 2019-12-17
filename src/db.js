@@ -5,7 +5,7 @@ const { Movie } = require('./schemes');
 
 const page = 1;
 
-mongoose.connect('mongodb://localhost:27017/usersdb', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/usersdb', { useNewUrlParser: true, useFindAndModify: false });
 
 const url = `${PARAMS.URL}popular`;
 
@@ -36,9 +36,9 @@ exports.createMovie = (movie) => Movie.create(new Movie(movie))
 exports.findMovieById = (id) => Movie.findById(id)
   .catch(e => console.log('Error with finding movies: ', e));
 
-exports.updateMovie = (id, { ...newParameters }) => Movie.updateOne(
-  id,
-  newParameters,
+exports.updateMovie = (id, body) => Movie.findOneAndUpdate(
+  { _id: id },
+  body,
 )
   .catch(e => {
     console.log('Error with updating movies: ', e);
