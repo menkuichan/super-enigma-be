@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
 const getMoviesFromApi = require('./api/movies').getMovies;
 const { PARAMS } = require('./constants');
+const { DB_URI } = require('./config');
 const { Movie } = require('./schemes');
 
 const page = 1;
 
-mongoose.connect('mongodb://localhost:27017', { useNewUrlParser: true, useFindAndModify: false });
+mongoose.connect(DB_URI, { useNewUrlParser: true, useFindAndModify: false });
 
 const url = `${PARAMS.URL}popular`;
 
