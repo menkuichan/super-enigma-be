@@ -13,18 +13,20 @@ const url = `${PARAMS.URL}popular`;
 exports.getMovies = async () => {
   try {
     const { movies } = await getMoviesFromApi({ page, url });
-    return movies.map(async (movie) => {
+    return await Promise.all(movies.map(async movie => {
       const { title, releaseDate } = movie;
       try {
         const result = await Movie.findOne({ title, releaseDate });
+
         if (!result) {
-          this.createMovie(movie);
+          return await this.createMovie(movie);
         }
+        return movie;
       } catch (e) {
         console.log(e);
+        return movie;
       }
-      return movie;
-    });
+    }));
   } catch (e) {
     console.log(e);
   }

@@ -5,7 +5,7 @@
     "author": "ilona.salomenskaya@instinctools.com",
     "main": "src/index.js",
     "scripts": {
-        "start": "node src/index.js",
+        "start": "nodemon src/index.js",
         "docker:build": "docker build -t projects/super-enigma-be .",
         "docker:run": "docker run -p 49160:8080 -d projects/super-enigma-be"
     },
