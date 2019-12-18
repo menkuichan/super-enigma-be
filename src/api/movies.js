@@ -2,7 +2,7 @@ const axios = require('axios');
 const { PARAMS, MAX_TOTAL_PAGES } = require('../constants.js');
 
 const getMoviesWithoutGenres = async ({ searchQuery, page, url }) => {
-  const res = await axios.get(
+  const { data: { results, total_pages: originalTotalPages } } = await axios.get(
     url,
     {
       params: {
@@ -12,8 +12,6 @@ const getMoviesWithoutGenres = async ({ searchQuery, page, url }) => {
       },
     },
   );
-  const { results } = res.data;
-  const { total_pages: originalTotalPages } = res.data;
   const totalPages = Math.min(originalTotalPages, MAX_TOTAL_PAGES);
   const movies = results.map(
     ({
