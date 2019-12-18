@@ -3,6 +3,12 @@ const { getMovieById, deleteMovie, getMovies, createMovie, updateMovie } = requi
 const { PORT, HOST } = require('./constants');
 
 const app = express();
+const allowCrossDomain = (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', '*');
+  next();
+};
+app.use(allowCrossDomain);
 app.use(express.json());
 app.get('/movies/', getMovies);
 app.get('/movies/:movieId', getMovieById);
