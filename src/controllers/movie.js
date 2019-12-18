@@ -1,43 +1,34 @@
 const { findMovieById, deleteMovie, getMovies, createMovie, updateMovie } = require('../model');
 
-exports.getMovieById = (req, res) => {
+exports.getMovieById = async (req, res) => {
   const { movieId } = req.params;
-  findMovieById(movieId).then(movie => {
-    res.setHeader('Content-Type', 'application/json');
-    res.status(200).json(movie);
-  });
+  const movie = await findMovieById(movieId);
+  res.setHeader('Content-Type', 'application/json');
+  res.status(200).json(movie);
 };
 
-exports.createMovie = (req, res) => {
-  createMovie(req.body)
-    .then(movie => {
-      res.setHeader('Content-Type', 'application/json');
-      res.status(200).json(movie);
-    });
+exports.createMovie = async (req, res) => {
+  const movie = await createMovie(req.body);
+  res.setHeader('Content-Type', 'application/json');
+  res.status(200).json(movie);
 };
 
-exports.getMovies = (req, res) => {
-  getMovies()
-    .then(movies => {
-      res.setHeader('Content-Type', 'application/json');
-      res.status(200).json(movies);
-    });
+exports.getMovies = async (req, res) => {
+  const movies = await getMovies();
+  res.setHeader('Content-Type', 'application/json');
+  res.status(200).json(movies);
 };
 
-exports.deleteMovie = (req, res) => {
+exports.deleteMovie = async (req, res) => {
   const { id } = req.params;
-  deleteMovie(id)
-    .then(movie => {
-      res.setHeader('Content-Type', 'application/json');
-      res.status(200).json(movie);
-    });
+  const movie = await deleteMovie(id);
+  res.setHeader('Content-Type', 'application/json');
+  res.status(200).json(movie);
 };
 
-exports.updateMovie = (req, res) => {
+exports.updateMovie = async (req, res) => {
   const { params: { id }, body } = req;
-  updateMovie(id, body)
-    .then(movie => {
-      res.setHeader('Content-Type', 'application/json');
-      res.status(200).json(movie);
-    });
+  const movie = await updateMovie(id, body);
+  res.setHeader('Content-Type', 'application/json');
+  res.status(200).json(movie);
 };
