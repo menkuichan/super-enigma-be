@@ -21,7 +21,6 @@ exports.getMovies = async ({ query, url, page }) => {
         return movie;
       } catch (e) {
         console.log(e);
-        return movie;
       }
     }));
   } catch (e) {

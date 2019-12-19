@@ -15,6 +15,7 @@ const movieScheme = new Schema({
   voteCount: Number,
   originalTitle: String,
   posterPath: String,
+  totalPages: Number,
 });
 
 const Movie = mongoose.model('Movie', movieScheme);

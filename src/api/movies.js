@@ -24,6 +24,7 @@ const getMoviesWithoutGenres = async ({ query, page, url }) => {
       voteAverage,
       overview,
       popularity,
+      totalPages,
       originalLanguage,
       voteCount,
       originalTitle,
@@ -31,7 +32,7 @@ const getMoviesWithoutGenres = async ({ query, page, url }) => {
       posterPath,
     }),
   );
-  return { totalPages, movies };
+  return { movies };
 };
 
 const getMovieWithGenres = (movie, genres) => {
@@ -60,9 +61,9 @@ const getMovies = async ({
   query, url, page,
 }) => {
   const genres = await getAllGenres();
-  const { movies, totalPages } = await getMoviesWithoutGenres({ query, page, url });
+  const { movies } = await getMoviesWithoutGenres({ query, page, url });
   const moviesResult = movies.map(movie => getMovieWithGenres(movie, genres));
-  return { totalPages, movies: moviesResult, genres };
+  return { movies: moviesResult, genres };
 };
 
 module.exports = { getMovies };
