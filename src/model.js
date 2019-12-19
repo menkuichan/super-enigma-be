@@ -9,8 +9,8 @@ mongoose.connect(DB_URI, { useNewUrlParser: true, useFindAndModify: false });
 exports.getMovies = async ({ query, url, page }) => {
   const fullUrl = query ? PARAMS.SEARCH_URL : `${PARAMS.URL}${url}`;
   try {
-    const { movies } = await getMoviesFromApi({ query, url: fullUrl, page });
-    return await Promise.all(movies.map(async movie => {
+    const { movies, totalPages, genres } = await getMoviesFromApi({ query, url: fullUrl, page });
+    const allMovie = await Promise.all(movies.map(async movie => {
       const { title, releaseDate } = movie;
       try {
         const result = await Movie.findOne({ title, releaseDate });
@@ -23,6 +23,7 @@ exports.getMovies = async ({ query, url, page }) => {
         console.log(e);
       }
     }));
+    return { movies: allMovie, totalPages, genres };
   } catch (e) {
     console.log(e);
   }
