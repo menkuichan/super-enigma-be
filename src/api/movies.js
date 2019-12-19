@@ -1,13 +1,13 @@
 const axios = require('axios');
 const { PARAMS, MAX_TOTAL_PAGES } = require('../constants.js');
 
-const getMoviesWithoutGenres = async ({ searchQuery, page, url }) => {
+const getMoviesWithoutGenres = async ({ query, page, url }) => {
   const { data: { results, total_pages: originalTotalPages } } = await axios.get(
     url,
     {
       params: {
         api_key: PARAMS.API_KEY,
-        query: searchQuery,
+        query,
         page,
       },
     },
@@ -57,13 +57,12 @@ const getAllGenres = async () => {
 };
 
 const getMovies = async ({
-  searchQuery, url, page,
+  query, url, page,
 }) => {
   const genres = await getAllGenres();
-  const { movies, totalPages } = await getMoviesWithoutGenres({ searchQuery, page, url });
-  return { totalPages,
-    movies: movies.map(movie => getMovieWithGenres(movie, genres)),
-    genres };
+  const { movies, totalPages } = await getMoviesWithoutGenres({ query, page, url });
+  const moviesResult = movies.map(movie => getMovieWithGenres(movie, genres));
+  return { totalPages, movies: moviesResult, genres };
 };
 
 module.exports = { getMovies };

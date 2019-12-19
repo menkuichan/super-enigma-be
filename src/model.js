@@ -4,15 +4,12 @@ const { PARAMS } = require('./constants');
 const { DB_URI } = require('./config');
 const { Movie } = require('./schemes');
 
-const page = 1;
-
 mongoose.connect(DB_URI, { useNewUrlParser: true, useFindAndModify: false });
 
-const url = `${PARAMS.URL}popular`;
-
-exports.getMovies = async () => {
+exports.getMovies = async ({ query, url, page }) => {
+  const fullUrl = query ? PARAMS.SEARCH_URL : `${PARAMS.URL}${url}`;
   try {
-    const { movies } = await getMoviesFromApi({ page, url });
+    const { movies } = await getMoviesFromApi({ query, url: fullUrl, page });
     return await Promise.all(movies.map(async movie => {
       const { title, releaseDate } = movie;
       try {

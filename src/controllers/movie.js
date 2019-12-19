@@ -12,7 +12,8 @@ exports.createMovie = async (req, res) => {
 };
 
 exports.getMovies = async (req, res) => {
-  const movies = await getMovies();
+  const { query, url, page } = req.query;
+  const movies = await getMovies({ query, url, page });
   res.status(200).json(movies);
 };
 
