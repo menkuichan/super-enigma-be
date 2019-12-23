@@ -30,6 +30,7 @@ exports.getMovies = async ({ query, url, page }) => {
 };
 
 exports.createMovie = (movie) => Movie.create(new Movie(movie))
+  .then(r => console.log(r))
   .catch(e => console.log('Error while saving movie:', e));
 
 exports.findMovieById = (id) => Movie.findById(id)

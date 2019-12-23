@@ -18,8 +18,9 @@ new CronJob(generateCronDate(), this.sendRequest, null, true, 'America/Los_Angel
 
 const apiRequest = ({ url, totalPages }) => {
   if (totalPages > 1) {
-    apiRequest(totalPages - 1);
-    getMovies({ url, totalPages });
+    apiRequest({ url, totalPages: totalPages - 1 });
+    getMovies({ url, page: totalPages });
+    console.log(totalPages);
   }
 };
 
@@ -27,7 +28,7 @@ exports.sendDataSyncRequest = async ({ serverStartDate }) => {
   createSyncRequest(0);
   const request = await findLastSuccessRequest();
   const lastRequest = request.map(res => res.date)[0].getHours();
-  if (lastRequest - serverStartDate.getHours() > MIN_UPDATE_TIME) {
+  if (serverStartDate.getHours() - lastRequest > MIN_UPDATE_TIME) {
     createSyncRequest(1);
     URL_TYPES.map(async (type) => {
       const { totalPages } = await getMovies({ url: type, page: 1 });
