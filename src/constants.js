@@ -25,7 +25,7 @@ const CRON_PARAMS = {
   SECONDS: '0',
 };
 
-const MIN_UPDATE_TIME = 1;
+const MIN_UPDATE_TIME = 3600000;
 
 const URL_TYPES = [
   'popular',

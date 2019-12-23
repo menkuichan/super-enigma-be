@@ -26,8 +26,8 @@ const apiRequest = ({ url, totalPages }) => {
 exports.sendDataSyncRequest = async ({ serverStartDate }) => {
   createSyncRequest(0);
   const request = await findLastSuccessRequest();
-  const lastRequest = request.map(res => res.date)[0].getHours();
-  if (serverStartDate.getHours() - lastRequest > MIN_UPDATE_TIME) {
+  const lastRequest = request.map(res => res.date)[0];
+  if (serverStartDate - lastRequest > MIN_UPDATE_TIME) {
     createSyncRequest(1);
     URL_TYPES.map(async (type) => {
       const { totalPages } = await getMovies({ url: type, page: 1 });
