@@ -18,9 +18,8 @@ new CronJob(generateCronDate(), this.sendRequest, null, true, 'America/Los_Angel
 
 const apiRequest = ({ url, totalPages }) => {
   if (totalPages > 1) {
-    apiRequest({ url, totalPages: totalPages - 1 });
     getMovies({ url, page: totalPages });
-    console.log(totalPages);
+    apiRequest({ url, totalPages: totalPages - 1 });
   }
 };
 
