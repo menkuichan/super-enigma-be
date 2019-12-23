@@ -12,4 +12,34 @@ const PARAMS = {
   API_KEY: 'ab7c9fc53125a8e8d9fd23c8704f80e5',
 };
 
-module.exports = { PORT, HOST, PARAMS, MAX_TOTAL_PAGES };
+const CRON_MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+
+const CRON_EVERY_TIME = '*';
+
+const CRON_PARAMS = {
+  YEAR: CRON_EVERY_TIME,
+  MONTH: CRON_EVERY_TIME,
+  DAY: CRON_EVERY_TIME,
+  HOURS: '0',
+  MINUTES: '0',
+  SECONDS: '0',
+};
+
+const MIN_UPDATE_TIME = 1;
+
+const URL_TYPES = [
+  'popular',
+  'upcoming',
+  'now_playing',
+];
+
+module.exports = {
+  PORT,
+  HOST,
+  PARAMS,
+  MAX_TOTAL_PAGES,
+  CRON_PARAMS,
+  CRON_MONTHS,
+  MIN_UPDATE_TIME,
+  URL_TYPES,
+};

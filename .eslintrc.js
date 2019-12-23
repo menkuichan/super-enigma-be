@@ -10,5 +10,6 @@ module.exports = {
     "camelcase": 0,
     "object-curly-newline": 0,
     "arrow-parens": 0,
+    "no-new": 0,
   },
 };

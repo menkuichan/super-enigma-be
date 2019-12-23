@@ -20,4 +20,11 @@ const movieScheme = new Schema({
 
 const Movie = mongoose.model('Movie', movieScheme);
 
-module.exports = { Movie };
+const requestSceme = new Schema({
+  date: Date,
+  status: Boolean,
+});
+
+const Request = mongoose.model('Request', requestSceme);
+
+module.exports = { Movie, Request };

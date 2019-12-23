@@ -1,6 +1,11 @@
 const express = require('express');
 const { getMovieById, deleteMovie, getMovies, createMovie, updateMovie } = require('./controllers/movie');
+const { sendDataSyncRequest } = require('./controllers/request');
 const { PORT, HOST } = require('./constants');
+
+const serverStartDate = new Date();
+
+sendDataSyncRequest({ serverStartDate });
 
 const app = express();
 const allowCrossDomain = (req, res, next) => {
