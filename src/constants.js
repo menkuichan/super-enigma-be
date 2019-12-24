@@ -25,6 +25,11 @@ const CRON_PARAMS = {
   SECONDS: '0',
 };
 
+const OMDB_PARAMS = {
+  URL: 'http://www.omdbapi.com/?t=ilo',
+  API_KEY: '6fc09eff',
+};
+
 const MIN_UPDATE_TIME = 3600000;
 
 const URL_TYPES = [
@@ -42,4 +47,6 @@ module.exports = {
   CRON_MONTHS,
   MIN_UPDATE_TIME,
   URL_TYPES,
+  OMDB_PARAMS,
+  CRON_EVERY_TIME,
 };
