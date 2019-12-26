@@ -13,7 +13,13 @@ const DATA_SOURCE = [{
     apikey: '6fc09eff',
     s: 'Batman',
   },
-  getData,
+  getData() {
+    return getData({
+      sourceName: this.sourceName,
+      updatingFrequency: this.updatingFrequency,
+      parameters: this.parameters,
+    });
+  },
 },
 {
   sourceName: 'TMDb',

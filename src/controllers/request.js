@@ -1,6 +1,7 @@
 const { CronJob } = require('cron');
 const { Request } = require('../schemes');
 const { getMovies } = require('../model');
+const getData = require('./data').getMovies;
 const { DATA_SOURCE } = require('../config');
 const { generateCronDate } = require('./cron');
 const { CRON_PARAMS: { YEAR, MONTH, DAY, HOURS, MINUTES, SECONDS }, MIN_UPDATE_TIME, URL_TYPES } = require('../constants');
@@ -30,7 +31,7 @@ exports.sendDataSyncRequest = async ({ serverStartDate }) => {
   const request = await findLastSuccessRequest();
   const lastRequest = request.map(res => res.date)[0];
   if (serverStartDate - lastRequest > MIN_UPDATE_TIME) {
-    DATA_SOURCE.map(source => {
+    DATA_SOURCE.map(async source => {
       createSyncRequest(1);
       if (source.sourceName === 'TMDb') {
         URL_TYPES.map(async (type) => {
@@ -39,7 +40,8 @@ exports.sendDataSyncRequest = async ({ serverStartDate }) => {
         });
       } else {
         const { sourceName, updatingFrequency, parameters } = source;
-        source.getData({ sourceName, updatingFrequency, parameters });
+        const { totalPages } = await getData({ sourceName, updatingFrequency, parameters });
+        console.log(totalPages);
       }
     });
   }

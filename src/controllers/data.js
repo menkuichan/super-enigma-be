@@ -29,7 +29,6 @@ const getData = async ({ parameters }) => {
   );
   const movies = fillEmptyObjectProperties(results);
   const totalPages = Math.ceil(totalResults / NUMBER_OF_RESULTS_PER_PAGE);
-  console.log('work');
   return { movies, totalPages };
 };
 
@@ -37,5 +36,5 @@ exports.getMovies = ({ sourceName, updatingFrequency, parameters }) => {
   const { seconds, minutes, hours, day, month, year } = updatingFrequency;
   new CronJob(generateCronDate({ seconds, minutes, hours, day, month, year }),
     () => getData({ sourceName, updatingFrequency, parameters }), null, true, 'America/Los_Angeles');
-  getData({ sourceName, updatingFrequency, parameters });
+  return getData({ sourceName, updatingFrequency, parameters });
 };
