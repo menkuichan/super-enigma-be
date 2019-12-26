@@ -1,7 +1,6 @@
 const { CronJob } = require('cron');
 const { Request } = require('../schemes');
 const { getMovies } = require('../model');
-const getData = require('./data').getMovies;
 const { DATA_SOURCE } = require('../config');
 const { generateCronDate } = require('./cron');
 const { CRON_PARAMS: { YEAR, MONTH, DAY, HOURS, MINUTES, SECONDS }, MIN_UPDATE_TIME, URL_TYPES } = require('../constants');
@@ -39,8 +38,7 @@ exports.sendDataSyncRequest = async ({ serverStartDate }) => {
           apiRequest({ url: type, totalPages });
         });
       } else {
-        const { sourceName, updatingFrequency, parameters } = source;
-        const { totalPages } = await getData({ sourceName, updatingFrequency, parameters });
+        const { totalPages } = await source.getData();
         console.log(totalPages);
       }
     });
