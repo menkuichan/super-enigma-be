@@ -38,6 +38,21 @@ const URL_TYPES = [
   'now_playing',
 ];
 
+const NUMBER_OF_RESULTS_PER_PAGE = 10;
+
+const MOVIE_OBJECT_PROPERTIES = {
+  title: 0,
+  releaseDate: 0,
+  posterPath: 0,
+  vote_average: 0,
+  genre_ids: 0,
+  overview: 0,
+  popularity: 0,
+  original_language: 0,
+  vote_count: 0,
+  original_title: 0,
+};
+
 module.exports = {
   PORT,
   HOST,
@@ -49,4 +64,6 @@ module.exports = {
   URL_TYPES,
   OMDB_PARAMS,
   CRON_EVERY_TIME,
+  NUMBER_OF_RESULTS_PER_PAGE,
+  MOVIE_OBJECT_PROPERTIES,
 };

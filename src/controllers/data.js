@@ -1,10 +1,41 @@
 const { CronJob } = require('cron');
 const axios = require('axios');
+const { NUMBER_OF_RESULTS_PER_PAGE, MOVIE_OBJECT_PROPERTIES } = require('../constants');
 const { generateCronDate } = require('./cron');
 
-exports.getData = async ({ sourceName, updatingFrequency, parameters }) => {
+const fillEmptyObjectProperties = (obj) => obj.map(
+  movie => ({ ...MOVIE_OBJECT_PROPERTIES, ...movie }),
+);
+
+const getData = async ({ parameters }) => {
+  const { url, apikey, s } = parameters;
+  const { data: { Search, totalResults } } = await axios.get(
+    url,
+    {
+      params: {
+        apikey,
+        s,
+      },
+    },
+  );
+  const results = Search.map(
+    ({
+      Title: title, Year: releaseDate, Poster: posterPath,
+    }) => ({
+      title,
+      releaseDate,
+      posterPath,
+    }),
+  );
+  const movies = fillEmptyObjectProperties(results);
+  const totalPages = Math.ceil(totalResults / NUMBER_OF_RESULTS_PER_PAGE);
+  console.log('work');
+  return { movies, totalPages };
+};
+
+exports.getMovies = ({ sourceName, updatingFrequency, parameters }) => {
   const { seconds, minutes, hours, day, month, year } = updatingFrequency;
   new CronJob(generateCronDate({ seconds, minutes, hours, day, month, year }),
-    this.sendRequest, null, true, 'America/Los_Angeles');
-  console.log(sourceName, updatingFrequency, parameters);
+    () => getData({ sourceName, updatingFrequency, parameters }), null, true, 'America/Los_Angeles');
+  getData({ sourceName, updatingFrequency, parameters });
 };

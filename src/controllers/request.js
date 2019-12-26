@@ -29,24 +29,18 @@ exports.sendDataSyncRequest = async ({ serverStartDate }) => {
   createSyncRequest(0);
   const request = await findLastSuccessRequest();
   const lastRequest = request.map(res => res.date)[0];
-  DATA_SOURCE.map(source => {
-    if (source.sourceName === 'TMDb') {
+  if (serverStartDate - lastRequest > MIN_UPDATE_TIME) {
+    DATA_SOURCE.map(source => {
       createSyncRequest(1);
-      URL_TYPES.map(async (type) => {
-        const { totalPages } = await getMovies({ url: type, page: 1 });
-        apiRequest({ url: type, totalPages });
-      });
-    } else {
-      const { sourceName, updatingFrequency, parameters } = source;
-      source.getData({ sourceName, updatingFrequency, parameters });
-    }
-  });
+      if (source.sourceName === 'TMDb') {
+        URL_TYPES.map(async (type) => {
+          const { totalPages } = await getMovies({ url: type, page: 1 });
+          apiRequest({ url: type, totalPages });
+        });
+      } else {
+        const { sourceName, updatingFrequency, parameters } = source;
+        source.getData({ sourceName, updatingFrequency, parameters });
+      }
+    });
+  }
 };
-
-// if (serverStartDate - lastRequest > MIN_UPDATE_TIME) {
-//   createSyncRequest(1);
-//   URL_TYPES.map(async (type) => {
-//     const { totalPages } = await getMovies({ url: type, page: 1 });
-//     apiRequest({ url: type, totalPages });
-//   });
-// }

@@ -1,4 +1,4 @@
-const { getData } = require('./controllers/data');
+const getData = require('./controllers/data').getMovies;
 const { CRON_EVERY_TIME } = require('./constants');
 
 const DB_URI = 'mongodb://localhost:27017';
@@ -11,6 +11,7 @@ const DATA_SOURCE = [{
   parameters: {
     url: 'http://www.omdbapi.com/',
     apikey: '6fc09eff',
+    s: 'Batman',
   },
   getData,
 },
