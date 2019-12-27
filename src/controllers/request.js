@@ -38,8 +38,7 @@ exports.sendDataSyncRequest = async ({ serverStartDate }) => {
           apiRequest({ url: type, totalPages });
         });
       } else {
-        const { totalPages } = await source.getData();
-        console.log(totalPages);
+        source.getData({ page: 1 });
       }
     });
   }

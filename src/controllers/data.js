@@ -7,14 +7,14 @@ const fillEmptyObjectProperties = (obj) => obj.map(
   movie => ({ ...MOVIE_OBJECT_PROPERTIES, ...movie }),
 );
 
-const getData = async ({ parameters }) => {
-  const { url, apikey, s } = parameters;
+const getData = async ({ parameters: { url, apikey, s }, page }) => {
   const { data: { Search, totalResults } } = await axios.get(
     url,
     {
       params: {
         apikey,
         s,
+        page,
       },
     },
   );
@@ -32,9 +32,18 @@ const getData = async ({ parameters }) => {
   return { movies, totalPages };
 };
 
-exports.getMovies = ({ sourceName, updatingFrequency, parameters }) => {
+const apiRequest = async ({ updatingFrequency, parameters, totalPages }) => {
+  if (totalPages > 1) {
+    await getData({ parameters, page: totalPages });
+    await apiRequest({ updatingFrequency, parameters, totalPages: totalPages - 1 });
+  }
+};
+
+exports.getMoviesFromOMDb = async ({ updatingFrequency, parameters, page }) => {
   const { seconds, minutes, hours, day, month, year } = updatingFrequency;
   new CronJob(generateCronDate({ seconds, minutes, hours, day, month, year }),
-    () => getData({ sourceName, updatingFrequency, parameters }), null, true, 'America/Los_Angeles');
-  return getData({ sourceName, updatingFrequency, parameters });
+    () => getData({ parameters, page }), null, true, 'America/Los_Angeles');
+  const { totalPages } = await getData({ parameters, page });
+  apiRequest({ updatingFrequency, parameters, totalPages });
+  return getData({ parameters, page });
 };
