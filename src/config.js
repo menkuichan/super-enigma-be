@@ -30,9 +30,7 @@ const DATA_SOURCE = [{
   parameters: {
 
   },
-  getData() {
-    return getData();
-  },
+  getData,
 }];
 
 module.exports = { DB_URI, DATA_SOURCE };
