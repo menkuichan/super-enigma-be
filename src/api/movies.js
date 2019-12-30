@@ -1,6 +1,11 @@
 const axios = require('axios');
+const { CronJob } = require('cron');
+const { generateCronDate } = require('../controllers/cron');
 const { getMovies } = require('../model');
-const { PARAMS, MAX_TOTAL_PAGES, URL_TYPES } = require('../constants.js');
+const { CRON_PARAMS: { YEAR, MONTH, DAY, HOURS, MINUTES, SECONDS },
+  URL_TYPES,
+  PARAMS,
+  MAX_TOTAL_PAGES } = require('../constants');
 
 const getMoviesWithoutGenres = async ({ query, page, url }) => {
   const { data: { results, total_pages: originalTotalPages } } = await axios.get(
@@ -68,14 +73,15 @@ exports.getMoviesFromTMDb = async ({
 
 const apiRequest = ({ url, totalPages }) => {
   if (totalPages > 1) {
-    console.log('work apiRequest', totalPages);
     this.getMoviesFromTMDb({ url, page: totalPages });
     apiRequest({ url, totalPages: totalPages - 1 });
   }
 };
 
 exports.getData = () => {
-  console.log('work getdata');
+  new CronJob(generateCronDate({
+    seconds: SECONDS, minutes: MINUTES, hours: HOURS, day: DAY, month: MONTH, year: YEAR,
+  }), this.apiRequest, null, true, 'America/Los_Angeles');
   URL_TYPES.map(async (type) => {
     const { totalPages } = await getMovies({ url: type, page: 1 });
     apiRequest({ url: type, totalPages });
