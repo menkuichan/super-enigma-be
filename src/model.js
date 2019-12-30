@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const getMoviesFromApi = require('./api/movies').getMovies;
+const { getMoviesFromTMDb } = require('./api/movies');
 const { PARAMS } = require('./constants');
 const { DB_URI } = require('./config');
 const { Movie } = require('./schemes');
@@ -9,7 +9,7 @@ mongoose.connect(DB_URI, { useNewUrlParser: true, useFindAndModify: false });
 exports.getMovies = async ({ query, url, page }) => {
   const fullUrl = query ? PARAMS.SEARCH_URL : `${PARAMS.URL}${url}`;
   try {
-    const { movies, totalPages, genres } = await getMoviesFromApi({ query, url: fullUrl, page });
+    const { movies, totalPages, genres } = await getMoviesFromTMDb({ query, url: fullUrl, page });
     const allMovie = await Promise.all(movies.map(async movie => {
       const { title, releaseDate } = movie;
       try {

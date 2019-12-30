@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { getMovies } = require('../model');
 const { PARAMS, MAX_TOTAL_PAGES, URL_TYPES } = require('../constants.js');
 
 const getMoviesWithoutGenres = async ({ query, page, url }) => {
@@ -56,7 +57,7 @@ const getAllGenres = async () => {
   return genres;
 };
 
-exports.getMovies = async ({
+exports.getMoviesFromTMDb = async ({
   query, url, page,
 }) => {
   const genres = await getAllGenres();
@@ -67,14 +68,16 @@ exports.getMovies = async ({
 
 const apiRequest = ({ url, totalPages }) => {
   if (totalPages > 1) {
-    this.getMovies({ url, page: totalPages });
-    this.apiRequest({ url, totalPages: totalPages - 1 });
+    console.log('work apiRequest', totalPages);
+    this.getMoviesFromTMDb({ url, page: totalPages });
+    apiRequest({ url, totalPages: totalPages - 1 });
   }
 };
 
 exports.getData = () => {
+  console.log('work getdata');
   URL_TYPES.map(async (type) => {
-    const { totalPages } = await this.getMovies({ url: type, page: 1 });
+    const { totalPages } = await getMovies({ url: type, page: 1 });
     apiRequest({ url: type, totalPages });
   });
 };
