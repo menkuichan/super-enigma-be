@@ -81,7 +81,7 @@ const apiRequest = ({ url, totalPages }) => {
 exports.getData = () => {
   new CronJob(generateCronDate({
     seconds: SECONDS, minutes: MINUTES, hours: HOURS, day: DAY, month: MONTH, year: YEAR,
-  }), this.apiRequest, null, true, 'America/Los_Angeles');
+  }), this.getData, null, true, 'America/Los_Angeles');
   URL_TYPES.map(async (type) => {
     const { totalPages } = await getMovies({ url: type, page: 1 });
     apiRequest({ url: type, totalPages });

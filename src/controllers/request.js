@@ -18,7 +18,7 @@ exports.sendDataSyncRequest = async ({ serverStartDate }) => {
   if (serverStartDate - lastRequest > MIN_UPDATE_TIME) {
     DATA_SOURCE.map(async source => {
       createSyncRequest(1);
-      source.getData({ page: 1 });
+      source.getData();
     });
   }
 };

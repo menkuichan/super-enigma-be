@@ -14,11 +14,11 @@ const DATA_SOURCE = [{
     apikey: '6fc09eff',
     s: 'Batman',
   },
-  getData({ page }) {
+  getData() {
     return getMoviesFromOMDb({
       updatingFrequency: this.updatingFrequency,
       parameters: this.parameters,
-      page,
+      page: 1,
     });
   },
 },
