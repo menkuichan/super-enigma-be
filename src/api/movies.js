@@ -62,7 +62,7 @@ const getAllGenres = async () => {
   return genres;
 };
 
-exports.getMoviesFromTMDb = async ({
+const getMoviesFromTMDb = async ({
   query, url, page,
 }) => {
   const genres = await getAllGenres();
@@ -78,7 +78,7 @@ const apiRequest = ({ url, totalPages }) => {
   }
 };
 
-exports.getData = () => {
+const getData = () => {
   new CronJob(generateCronDate({
     seconds: SECONDS, minutes: MINUTES, hours: HOURS, day: DAY, month: MONTH, year: YEAR,
   }), this.getData, null, true, 'America/Los_Angeles');
@@ -87,3 +87,5 @@ exports.getData = () => {
     apiRequest({ url: type, totalPages });
   });
 };
+
+module.exports = { getMoviesFromTMDb, getData, apiRequest };
