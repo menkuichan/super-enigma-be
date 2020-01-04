@@ -12,20 +12,19 @@ const createSyncRequest = (status) => {
   }));
 };
 
-const checkDbEmptiness = () => Movie.findOne({});
+const checkDbEmptiness = () => Movie.findOne({ });
 
 const sendDataSyncRequest = async ({ serverStartDate }) => {
   createSyncRequest(0);
   const request = await findLastSuccessRequest();
   const lastRequest = request.map(res => res.date)[0];
-  checkDbEmptiness().then(res => {
-    if (serverStartDate - lastRequest > MIN_UPDATE_TIME || !res) {
-      DATA_SOURCE.map(async source => {
-        createSyncRequest(1);
-        await source.getData();
-      });
-    }
-  });
+  const result = await checkDbEmptiness();
+  if (serverStartDate - lastRequest > MIN_UPDATE_TIME || !result) {
+    DATA_SOURCE.map(async source => {
+      createSyncRequest(1);
+      await source.getData();
+    });
+  }
 };
 
 module.exports = { sendDataSyncRequest };
