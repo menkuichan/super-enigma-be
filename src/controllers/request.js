@@ -1,4 +1,5 @@
 const { Request } = require('../schemes');
+const { Movie } = require('../schemes');
 const { DATA_SOURCE } = require('../config');
 const { MIN_UPDATE_TIME } = require('../constants');
 
@@ -11,14 +12,20 @@ const createSyncRequest = (status) => {
   }));
 };
 
-exports.sendDataSyncRequest = async ({ serverStartDate }) => {
+const checkDbEmptiness = () => Movie.findOne({});
+
+const sendDataSyncRequest = async ({ serverStartDate }) => {
   createSyncRequest(0);
   const request = await findLastSuccessRequest();
   const lastRequest = request.map(res => res.date)[0];
-  if (serverStartDate - lastRequest > MIN_UPDATE_TIME) {
-    DATA_SOURCE.map(async source => {
-      createSyncRequest(1);
-      source.getData();
-    });
-  }
+  checkDbEmptiness().then(res => {
+    if (serverStartDate - lastRequest > MIN_UPDATE_TIME || !res) {
+      DATA_SOURCE.map(async source => {
+        createSyncRequest(1);
+        await source.getData();
+      });
+    }
+  });
 };
+
+module.exports = { sendDataSyncRequest };

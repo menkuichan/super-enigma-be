@@ -88,4 +88,4 @@ const getData = () => {
   });
 };
 
-module.exports = { getMoviesFromTMDb, getData, apiRequest };
+module.exports = { getMoviesFromTMDb, getData };
